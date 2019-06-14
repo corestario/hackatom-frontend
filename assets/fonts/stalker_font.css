@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'STALKER';
+    src: url('AmazSTALKERItalic.woff2') format('woff2'),
+        url('AmazSTALKERItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'STALKER';
+    src: url('AmazSTALKER.woff2') format('woff2'),
+        url('AmazSTALKER.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+

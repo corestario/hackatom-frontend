@@ -1,0 +1,50 @@
+
+//$web-font-path: "https://fonts.googleapis.com/css?family=Lato:300,400,700,900";
+//$web-font-path: 'https://fonts.googleapis.com/css?family=Montserrat:400,600,700&subset=cyrillic';
+// Fonts
+
+
+
+$blue: #057AFF;
+$white: #FFF;
+$green: #4CAF50;
+$red: #f44336;
+$cyan: #17E6C4;
+$cyan-light: #3CF9DA;
+$cyan-dark: #18D2B3;
+$pink: #E50467;
+$orange: #FF9800;
+$gray-400: #BABCCC;
+$gray-700: #3B3F4F;
+$gray-800: #21222B;
+$gray-900: #191A21;
+
+
+$primary: $cyan;
+$secondary: $gray-700;
+//$danger: $orange;
+$warning: $orange;
+$info: $pink;
+$light: $gray-400;
+$dark: $gray-800;
+
+// Customize the light and dark text colors for use in our YIQ color contrast function.
+$yiq-contrasted-threshold:  185;
+
+$body-bg: $gray-900;
+$body-color: $gray-400;
+
+$link-hover-color: $cyan-light;
+$link-hover-decoration: none;
+
+$input-bg: $gray-800;
+$input-color: $white;
+$input-border-color:$gray-700;
+//$input-disabled-bg:;
+$input-focus-border-color: $blue;
+$input-box-shadow: none;
+$input-focus-box-shadow: none;
+
+$card-bg: $dark;
+
+$btn-font-weight: 600;
