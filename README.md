@@ -1,6 +1,10 @@
 # cosmos-nft-market
 
-> Cosmos NFT Market Zone
+> Cosmos NFT Market Frontend
+
+## Preps
+
+Change config, set zone nodes urls in `store/index.js`
 
 ## Build Setup
 
