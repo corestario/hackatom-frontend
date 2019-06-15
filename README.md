@@ -1,6 +1,6 @@
-# cosmos-nft-market
+# Cosmos NFT Market Frontend
 
-> Cosmos NFT Market Frontend
+> test frontend to demonstrate transfer nft tokens to market hub
 
 ## Preps
 
