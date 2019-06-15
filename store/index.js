@@ -1,8 +1,9 @@
 export const state = () => ({
   config: {
-    node: 'http://localhost:1317',
+    zone1Node: 'http://localhost:1317',
+    zone2Node: 'http://localhost:1317',
     chainId: 'NFTChain',
-  }
+  },
 })
 
 export const mutations = {}

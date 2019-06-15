@@ -19,7 +19,7 @@ export function loadUserInfo({ commit, state, getters, rootState }) {
   }
   return new Promise((resolve, reject) => {
     this.$axios
-      .$get(rootState.config.node + '/auth/accounts/' + getters.currentUser.address)
+      .$get(rootState.config.zone1Node + '/auth/accounts/' + getters.currentUser.address)
       .then(response => {
         console.log(response)
         commit('userInfo', response.value)
