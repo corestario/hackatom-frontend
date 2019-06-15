@@ -7,6 +7,11 @@
 @import "~bootstrap-vue/src/index";
 
 
+.card-deck .card {
+  min-width: calc(25% - 30px);
+  max-width: calc(25% - 30px);
+}
+
 
 //@import "../fonts/stalker_font.css";
 //

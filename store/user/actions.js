@@ -5,7 +5,8 @@ export function setUser({ commit }, { id = null, name = null, address = null, pa
 
 export function setCurrentUser({ commit, dispatch }, id) {
   commit('setCurrentUser', id)
-  return dispatch('loadUserInfo')
+  return Promise.resolve()
+  // return dispatch('loadUserInfo')
 }
 
 export function delCurrentUser({ commit }) {
@@ -26,7 +27,25 @@ export function loadUserInfo({ commit, state, getters, rootState }) {
         resolve()
       })
       .catch(e => {
-        console.error('auth/accounts', e)
+        console.error('zone1 auth/accounts', e)
+        reject(e)
+      })
+  })
+}
+export function loadHubUserInfo({ commit, state, getters, rootState }) {
+  if (getters.currentUser === null) {
+    return Promise.resolve()
+  }
+  return new Promise((resolve, reject) => {
+    this.$axios
+      .$get(rootState.config.zone2Node + '/auth/accounts/' + getters.currentUser.address)
+      .then(response => {
+        console.log(response)
+        commit('userHubInfo', response.value)
+        resolve()
+      })
+      .catch(e => {
+        console.error('zone2 auth/accounts', e)
         reject(e)
       })
   })
