@@ -19,10 +19,12 @@ export function loadUserInfo({ commit, state, getters, rootState }) {
     return Promise.resolve()
   }
   return new Promise((resolve, reject) => {
-    this.$axios
-      .$get(rootState.config.zone1Node + '/auth/accounts/' + getters.currentUser.address)
-      .then(response => {
-        console.log(response)
+    return Promise.all([
+      this.$axios.$get(rootState.config.zone1Node + '/auth/accounts/' + getters.currentUser.address),
+      this.$axios.$get(rootState.config.zone2Node + '/auth/accounts/' + getters.currentUser.address),
+    ])
+      .then(responses => {
+        // console.log(response.Account)
         commit('userInfo', response.value)
         resolve()
       })
@@ -40,7 +42,7 @@ export function loadHubUserInfo({ commit, state, getters, rootState }) {
     this.$axios
       .$get(rootState.config.zone2Node + '/auth/accounts/' + getters.currentUser.address)
       .then(response => {
-        console.log(response)
+
         commit('userHubInfo', response.value)
         resolve()
       })

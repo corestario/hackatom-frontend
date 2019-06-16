@@ -28,7 +28,7 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '~/plugins/vuex-persist', ssr: false },
+    // { src: '~/plugins/vuex-persist', ssr: false },
   ],
   /*
    ** Nuxt.js modules
@@ -39,6 +39,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     // '@nuxtjs/eslint-module'
+    '@nuxtjs/proxy'
   ],
   /*
    ** Axios module configuration
@@ -60,6 +61,18 @@ export default {
     //   'FormRadio'
     // ],
     // directivePlugins: ['Popover']
+  },
+  proxy: {
+    '/apiZone': {
+      pathRewrite: { '^/apiZone': '' },
+      target: 'http://localhost:1317',
+      ws: false
+    },
+    '/apiHub': {
+      pathRewrite: { '^/apiHub': '' },
+      target: 'http://localhost:1317',
+      ws: false
+    },
   },
   /*
    ** Build configuration

@@ -1,7 +1,7 @@
 export const state = () => ({
   config: {
-    zone1Node: 'http://localhost:1317',
-    zone2Node: 'http://localhost:1317',
+    zone1Node: '/apiZone',
+    zone2Node: '/apiHub',
     chainId: 'NFTChain',
   },
 })
@@ -10,6 +10,7 @@ export const mutations = {}
 
 export const actions = {
   // server pre init
-  // async nuxtServerInit({ commit, dispatch }, { req, app }) {
-  // },
+  async nuxtServerInit({ commit, dispatch }, { req, app }) {
+    await dispatch('user/loadUserInfo')
+  },
 }

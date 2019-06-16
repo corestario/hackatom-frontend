@@ -30,4 +30,10 @@ export default {
       sequence: info.sequence || "0",
     }
   },
+  userHubInfo(state, info) {
+    state.currentUserHubInfo = {
+      account_number: info.account_number || "0",
+      sequence: info.sequence || "0",
+    }
+  },
 }

@@ -28,8 +28,8 @@
               </div>
 
               <div class="d-flex mb-5">
-                    <b-btn variant="info" @click="doTransfer(t)"  class="mx-1 flex-fill">Send to Hub</b-btn>
-                    <b-btn variant="warning" @click="prepSell(t)"  class="mx-1 flex-fill">Send & Sell</b-btn>
+<!--                    <b-btn variant="info" @click="doTransfer(t)"  class="mx-1 flex-fill">Send to Hub</b-btn>-->
+                    <b-btn variant="info" @click="prepSell(t)"  class="mx-1 ">Sell</b-btn>
               </div>
             </b-card>
           </b-card-group>
@@ -97,11 +97,12 @@
                       </p>
 
 
-                      <b-btn size="sm" variant="link" @click="doShow(t)">more</b-btn>
+                      <h6><small>price:</small> <b-badge variant="info">{{ t.price }} token</b-badge></h6>
                     </b-col>
                     <b-col cols="3" class="d-flex flex-column">
                       <b-btn v-if="isSaleStatus(t)" variant="warning" @click="prepDirectSell(t)">Sell</b-btn>
                       <b-btn v-else variant="danger" @click="doCancelSell(t)">Cancel</b-btn>
+
                     </b-col>
                   </b-row>
                 </b-list-group-item>
@@ -112,7 +113,7 @@
             <b-card>
               <template slot="header">
                 <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">NFTs on sale</h5>
+                  <h5 class="mb-1">NFTs on market hub for sale</h5>
                 </div>
               </template>
               <b-card-body v-if="!myTokensOnMarket.length">
@@ -129,8 +130,10 @@
                       <b-link :href="t.token_uri">external link</b-link>
                     </small>
                   </div>
+                  <h5><small>price:</small> <b-badge variant="info">{{ t.price }} token</b-badge></h5>
                   <div class="mb-5">
-                    <b-btn variant="success" :disabled="isMyToken(t)" @click="doBuy(t)" block>Buy</b-btn>
+                    <b-btn v-if="isMyToken(t)" variant="danger" @click="doCancelSell(t)" block>Cancel</b-btn>
+                    <b-btn v-else variant="success" @click="doBuy(t)" block>Buy</b-btn>
                   </div>
                 </b-card>
               </b-card-group>
@@ -164,6 +167,8 @@
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
 
+
+const fallback = false
 export default {
   name: 'Home',
   data: () => ({
@@ -184,7 +189,7 @@ export default {
     ...mapGetters('user', ['currentUser']),
     // ...mapGetters('token', ['hubTokens']),
     myTokensOnMarket() {
-      console.log(this.hubTokens)
+      // console.log(this.hubTokens)
       return this.hubTokens.filter(x => x.owner === this.currentUser.address)
 
       // return this.hubTokens(this.currentUser.address, null)
@@ -197,6 +202,7 @@ export default {
     // }
   },
   mounted() {
+    console.log('id',this.id)
     if (this.id !== null) {
       this.loadUserTokens()
       this.loadHubTokens()
@@ -212,12 +218,11 @@ export default {
     ]),
     ...mapActions('user', ['loadUserInfo']),
     isSaleStatus(t) {
-      //todo change to real
-      return Math.random() > 0.5
-      // return t.status && t.status === 'onSale'
+      // todo change to real
+      return t.status && t.status === 'onSale'
     },
     isMyToken(t) {
-      //todo change to real
+      // todo change to real
       return Math.random() > 0.5
       // return t.owner && t.owner === this.currentUser.address
     },
@@ -249,36 +254,87 @@ export default {
       console.log(t)
     },
     doBuy(t) {
-      console.log(t)
+      this.$bvModal.msgBoxConfirm(`Confirm buy of ${ t.id }?`)
+        .then(value => {
+          if (value) {
+            console.log(t)
+            this.loadUserInfo().then(() => {
+            //   this.removeTokenFromSale(t.id).then(r => {
+            //     this.$bvToast.toast(`id ${ t.id }, tx ${ r.txhash }`, {
+            //       title: 'Token removed from sale',
+            //       autoHideDelay: 5000,
+            //       variant: 'primary',
+            //     })
+            //     console.log(r)
+            //     this.loadUserTokens()
+            //   }).catch(console.log)
+            }).catch(console.log)
+          }
+        })
+        .catch(err => {
+          // An error occurred
+        })
+
     },
     doCancelSell(t) {
-      console.log(t)
+
+      this.$bvModal.msgBoxConfirm(`Confirm cancel sale of ${ t.id }?`)
+        .then(value => {
+          if (value) {
+            console.log(t)
+            // this.loadUserInfo().then(() => {
+            //   this.removeTokenFromSale(t.id).then(r => {
+            //     this.$bvToast.toast(`id ${ t.id }, tx ${ r.txhash }`, {
+            //       title: 'Token removed from sale',
+            //       autoHideDelay: 5000,
+            //       variant: 'primary',
+            //     })
+            //     console.log(r)
+            //     this.loadUserTokens()
+            //   }).catch(console.log)
+            // }).catch(console.log)
+          }
+        })
+        .catch(err => {
+          // An error occurred
+        })
+
     },
+
     doTransferAndSell() {
       console.log(this.selectedToken)
       this.loadUserInfo().then(() => {
-          this.transferTokenToHub(this.selectedToken.id)
+          this.transferTokenToHub({ tokenId: this.selectedToken.id, price: parseInt(this.formSell.price) })
             .then(r => {
               console.log(r)
               this.loadUserTokens()
-              this.$bvToast.toast(`id ${ this.selectedToken.id }, tx ${ r.txhash }`, {
-                title: 'Token transferred to HUB',
-                autoHideDelay: 5000,
-                variant: 'primary',
-              })
 
-              this.receiveTokenOnHub({ id: this.selectedToken.id, ...this.formSell })
-                .then(r => {
-                  console.log(r)
-                  this.loadHubTokens()
-              //     this.$bvToast.toast(`tx ${r.txhash}`, {
-              //       title: 'Token placed on market',
-              //       // autoHideDelay: 5000,
-              //       variant: 'warning',
-              //     })
-              //     // this.formSell = {}
+              if (fallback) {
+                this.$bvToast.toast(`id ${ this.selectedToken.id }, tx ${ r.txhash }`, {
+                  title: 'Token transferred to market',
+                  autoHideDelay: 5000,
+                  variant: 'primary',
                 })
-                .catch(console.log)
+                this.receiveTokenOnHub({ id: this.selectedToken.id, ...this.formSell })
+                  .then(r => {
+                    console.log(r)
+                    this.loadHubTokens()
+                    this.$bvToast.toast(`sendTx ${r.txhash}`, {
+                      title: 'Token placed on sale',
+                      // autoHideDelay: 5000,
+                      variant: 'warning',
+                    })
+                    // this.formSell = {}
+                  })
+                  .catch(console.log)
+              } else {
+                this.$bvToast.toast(`id ${this.selectedToken.id }, tx ${ r.txhash }`, {
+                  title: 'Token transferred and placed to sale',
+                  autoHideDelay: 5000,
+                  variant: 'primary',
+                })
+                this.loadHubTokens()
+              }
             })
             .catch(console.log)
         })

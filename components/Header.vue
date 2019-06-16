@@ -7,6 +7,7 @@
         <b-collapse id="nav_collapse" is-nav>
           <b-navbar-nav>
             <b-nav-item :to="{name:'index'}" exact>Market</b-nav-item>
+<!--            <b-nav-item :to="{name:'sign'}" exact>Sign</b-nav-item>-->
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <!--<b-nav-form>-->
